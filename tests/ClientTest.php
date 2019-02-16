@@ -61,7 +61,7 @@ class ClientTest extends TestCase
 
     public function testGetCountry()
     {
-        $res = $this->client->getCountry();
+        $res = $this->client->setLang('zh-cn')->getCountry();
         $this->assertGreaterThan(0, count($res));
         $this->assertContains([
             'CountryCode' => 'CN', 'EName' => 'CHINA', 'CName' => '中国',
