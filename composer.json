@@ -1,0 +1,39 @@
+{
+    "name": "dakalab/yun-express",
+    "description": "Unofficial PHP SDK for YunTu express",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Hyper Jiang",
+            "email": "hyper@dakalab.com",
+            "homepage": "http://dakalab.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.1",
+        "guzzlehttp/guzzle": "^6.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7",
+        "friendsofphp/php-cs-fixer": "^2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Dakalab\\YunExpress\\": "src/YunExpress/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Dakalab\\YunExpress\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": [
+            "@phpunit",
+            "@phpcs"
+        ],
+        "phpunit": "phpunit --color=always --verbose",
+        "phpcs": "php-cs-fixer fix -v --diff"
+    }
+}
