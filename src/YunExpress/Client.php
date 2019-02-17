@@ -183,4 +183,42 @@ class Client
 
         return $this->parseResult($response->getBody());
     }
+
+    /**
+     * Get price
+     *
+     * @param  string  $countryCode country code, e.g. CN
+     * @param  string  $weight      weight of package, unit: kg, 3 decimals
+     * @param  int     $length      length of package, unit: cm, default 1
+     * @param  int     $width       width of package, unit: cm, default 1
+     * @param  int     $height      height of package, unit: cm, default 1
+     * @param  int     $type        1: package, 2: document, 3: waterproof bag, default 1
+     * @return array
+     */
+    public function getPrice(
+        $countryCode,
+        $weight,
+        $length = 1,
+        $width = 1,
+        $height = 1,
+        $type = 1
+    ) {
+        $api = 'lms/GetPrice';
+        $query = [];
+        if (!empty($countryCode)) {
+            $query = [
+                'query' => [
+                    'countryCode'    => $countryCode,
+                    'weight'         => $weight,
+                    'length'         => $length,
+                    'width'          => $width,
+                    'height'         => $height,
+                    'shippingTypeId' => $type,
+                ],
+            ];
+        }
+        $response = $this->client->request('GET', $this->host . $api, $query);
+
+        return $this->parseResult($response->getBody());
+    }
 }

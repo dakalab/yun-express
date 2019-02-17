@@ -63,31 +63,50 @@ class ClientTest extends TestCase
     {
         $res = $this->client->setLang('zh-cn')->getCountry();
         $this->assertGreaterThan(0, count($res));
-        $this->assertContains([
-            'CountryCode' => 'CN', 'EName' => 'CHINA', 'CName' => '中国',
-        ], $res);
+        $this->assertEquals([
+            'CountryCode', 'EName', 'CName',
+        ], array_keys($res[0]));
     }
 
     public function testGetTransport()
     {
         $res = $this->client->getTransport('HK');
         $this->assertGreaterThan(0, count($res));
-        $this->assertContains([
-            'Code'            => 'ZGZX',
-            'FullName'        => '中港专线',
-            'EnglishName'     => 'ZGZX',
-            'HaveTrackingNum' => true,
-            'DisplayName'     => '中港专线',
-        ], $res);
+        $this->assertEquals([
+            'Code',
+            'FullName',
+            'EnglishName',
+            'HaveTrackingNum',
+            'DisplayName',
+        ], array_keys($res[0]));
     }
 
     public function testGetGoodsType()
     {
         $res = $this->client->getGoodsType();
         $this->assertGreaterThan(0, count($res));
-        $this->assertContains([
-            'GoodsTypeID'   => 1,
-            'GoodsTypeName' => '包裹',
-        ], $res);
+        $this->assertEquals([
+            'GoodsTypeID',
+            'GoodsTypeName',
+        ], array_keys($res[0]));
+    }
+
+    public function testGetPrice()
+    {
+        $res = $this->client->getPrice('HK', 2);
+        $this->assertGreaterThan(0, count($res));
+        $this->assertEquals([
+            'Code',
+            'ShippingMethodName',
+            'ShippingMethodEName',
+            'ShippingFee',
+            'RegistrationFee',
+            'FuelFee',
+            'TariffPrepayFee',
+            'SundryFee',
+            'TotalFee',
+            'Remarks',
+            'DeliveryTime',
+        ], array_keys($res[0]));
     }
 }
