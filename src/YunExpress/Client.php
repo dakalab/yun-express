@@ -147,4 +147,25 @@ class Client
 
         return $this->parseResult($response->getBody());
     }
+
+    /**
+     * Get available transports in given country,
+     * if country code is not specified, then will list all transports
+     *
+     * @param  string  $countryCode country code, e.g. CN
+     * @return array
+     */
+    public function getTransport($countryCode = '')
+    {
+        $api = 'lms/Get';
+        $query = [];
+        if (!empty($countryCode)) {
+            $query = [
+                'query' => ['countryCode' => $countryCode],
+            ];
+        }
+        $response = $this->client->request('GET', $this->host . $api, $query);
+
+        return $this->parseResult($response->getBody());
+    }
 }

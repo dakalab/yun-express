@@ -67,4 +67,17 @@ class ClientTest extends TestCase
             'CountryCode' => 'CN', 'EName' => 'CHINA', 'CName' => '中国',
         ], $res);
     }
+
+    public function testGetTransport()
+    {
+        $res = $this->client->getTransport('HK');
+        $this->assertGreaterThan(0, count($res));
+        $this->assertContains([
+            'Code'            => 'ZGZX',
+            'FullName'        => '中港专线',
+            'EnglishName'     => 'ZGZX',
+            'HaveTrackingNum' => true,
+            'DisplayName'     => '中港专线',
+        ], $res);
+    }
 }

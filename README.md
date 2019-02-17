@@ -19,7 +19,7 @@ composer require dakalab/yun-express
 ## Usage
 
 ```
-$client = new  Dakalab\YunExpress\Client($account, $secret);
+$client = new Dakalab\YunExpress\Client($account, $secret);
 
 $countries = $client->getCountry();
 print_r($countries);
