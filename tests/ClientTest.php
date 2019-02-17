@@ -80,4 +80,14 @@ class ClientTest extends TestCase
             'DisplayName'     => '中港专线',
         ], $res);
     }
+
+    public function testGetGoodsType()
+    {
+        $res = $this->client->getGoodsType();
+        $this->assertGreaterThan(0, count($res));
+        $this->assertContains([
+            'GoodsTypeID'   => 1,
+            'GoodsTypeName' => '包裹',
+        ], $res);
+    }
 }

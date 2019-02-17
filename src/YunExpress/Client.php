@@ -168,4 +168,19 @@ class Client
 
         return $this->parseResult($response->getBody());
     }
+
+    /**
+     * Get goods type
+     *
+     * @throws \Exception
+     * @throws \GuzzleHttp\Exception\ClientException
+     * @return array
+     */
+    public function getGoodsType()
+    {
+        $api = 'lms/GetGoodstype';
+        $response = $this->client->request('GET', $this->host . $api);
+
+        return $this->parseResult($response->getBody());
+    }
 }
