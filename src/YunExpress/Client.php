@@ -122,12 +122,10 @@ class Client
     {
         $arr = json_decode($result, true);
         if (empty($arr) || !isset($arr['ResultCode'])) {
-            throw new \Exception('Invalid response: ' . $result);
+            throw new \Exception('Invalid response: ' . $result, 400);
         }
         if ($arr['ResultCode'] != '0000') {
-            throw new \Exception(
-                sprintf('code: %s, desc: %s', $arr['ResultCode'], $arr['ResultDesc'])
-            );
+            throw new \Exception($arr['ResultDesc'], $arr['ResultCode']);
         }
 
         return $arr['Item'];
@@ -214,6 +212,28 @@ class Client
                     'width'          => $width,
                     'height'         => $height,
                     'shippingTypeId' => $type,
+                ],
+            ];
+        }
+        $response = $this->client->request('GET', $this->host . $api, $query);
+
+        return $this->parseResult($response->getBody());
+    }
+
+    /**
+     * Get tracking number by order id
+     *
+     * @param  string  $orderID order id, multiple order ids can be separated by comma
+     * @return array
+     */
+    public function getTrackingNumberByOrderID($orderID)
+    {
+        $api = 'WayBill/GetTrackNumber';
+        $query = [];
+        if (!empty($orderID)) {
+            $query = [
+                'query' => [
+                    'orderId' => $orderID,
                 ],
             ];
         }

@@ -44,10 +44,10 @@ class ClientTest extends TestCase
 
     /**
      * @dataProvider parseResultProvider
+     * @expectedException \Exception
      */
     public function testParseResult($result)
     {
-        $this->expectException(\Exception::class);
         $this->client->parseResult($result);
     }
 
@@ -108,5 +108,15 @@ class ClientTest extends TestCase
             'Remarks',
             'DeliveryTime',
         ], array_keys($res[0]));
+    }
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionCode 1006
+     * @expectedExceptionMessage 未找到跟踪号
+     */
+    public function testGetTrackingNumberByOrderID()
+    {
+        $this->client->getTrackingNumberByOrderID('fake');
     }
 }
