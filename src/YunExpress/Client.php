@@ -315,4 +315,25 @@ class Client
 
         return $this->parseResult($response->getBody());
     }
+
+    /**
+     * Update weight of order
+     *
+     * @param  string $orderNumber order number
+     * @param  float  $weight      weight, decimal(18,3)
+     * @return void
+     */
+    public function updateWeight($orderNumber, $weight)
+    {
+        $api = 'WayBill/UpdateWeight';
+        $data = [
+            'OrderNumber' => $orderNumber,
+            'Weight'      => $weight,
+        ];
+        $body = ['body' => json_encode($data)];
+
+        $response = $this->client->post($this->host . $api, $body);
+
+        return $this->parseResult($response->getBody());
+    }
 }

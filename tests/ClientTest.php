@@ -218,4 +218,10 @@ class ClientTest extends TestCase
     {
         $this->client->getWayBill('fake');
     }
+
+    public function testUpdateWeight()
+    {
+        $res = $this->client->updateWeight('fake', '2.88');
+        $this->assertEquals('failure', $res['Rueslt']);
+    }
 }
