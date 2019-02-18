@@ -153,9 +153,7 @@ class Client
      * Get available transports in given country,
      * if country code is not specified, then will list all transports
      *
-     * @param  string                                  $countryCode country code, e.g. CN
-     * @throws \Exception
-     * @throws \GuzzleHttp\Exception\ClientException
+     * @param  string  $countryCode country code, e.g. CN
      * @return array
      */
     public function getTransport($countryCode = '')
@@ -228,7 +226,7 @@ class Client
     /**
      * Get tracking number by order id
      *
-     * @param  string  $orderID order id, multiple order ids can be separated by comma
+     * @param  string  $orderID order id, multiple order ids must be separated by comma
      * @return array
      */
     public function getTrackingNumberByOrderID($orderID)
@@ -281,6 +279,28 @@ class Client
             $query = [
                 'query' => [
                     'number' => $number,
+                ],
+            ];
+        }
+        $response = $this->client->get($this->host . $api, $query);
+
+        return $this->parseResult($response->getBody());
+    }
+
+    /**
+     * Get agent numbers by order id
+     *
+     * @param  string  $orderIDs order id, multiple order ids must be separated by comma
+     * @return array
+     */
+    public function getAgentNumbers($orderIDs)
+    {
+        $api = 'WayBill/GetAgentNumbers';
+        $query = [];
+        if (!empty($orderIDs)) {
+            $query = [
+                'query' => [
+                    'orderIds' => $orderIDs,
                 ],
             ];
         }
