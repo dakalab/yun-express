@@ -60,6 +60,7 @@ class ClientTest extends TestCase
         return [
             [''],
             ['{"ResultCode": "1006", "ResultDesc": "未找到数据查无数据", "Item": null}'],
+            ['{"ResultCode": "提交失败", "ResultDesc": "订单不存在", "Item": null}'],
         ];
     }
 
@@ -170,7 +171,7 @@ class ClientTest extends TestCase
         $s->SenderZip = '123456';
         $s->SenderPhone = '12345678456';
 
-        $waybill->SenderInfo = $s;
+        // $waybill->SenderInfo = $s;
 
         $a = new ApplicationInfo;
         $a->ApplicationName = 'Awesome product';
@@ -186,5 +187,15 @@ class ClientTest extends TestCase
         $waybills[] = $waybill;
 
         $this->client->batchAddWaybill($waybills);
+    }
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionCode 1001
+     * @expectedExceptionMessage 订单不存在
+     */
+    public function testGetSenderInfo()
+    {
+        $this->client->getSenderInfo('fake');
     }
 }

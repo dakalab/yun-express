@@ -125,6 +125,9 @@ class Client
             throw new \Exception('Invalid response: ' . $result, 400);
         }
         if ($arr['ResultCode'] != '0000') {
+            if (!is_numeric($arr['ResultCode'])) {
+                $arr['ResultCode'] = '1001';
+            }
             throw new \Exception($arr['ResultDesc'], $arr['ResultCode']);
         }
 
@@ -260,6 +263,28 @@ class Client
         $body = ['body' => json_encode($data)];
 
         $response = $this->client->post($this->host . $api, $body);
+
+        return $this->parseResult($response->getBody());
+    }
+
+    /**
+     * Get sender info
+     *
+     * @param  string  $number can be waybill number, order id or tracking number
+     * @return array
+     */
+    public function getSenderInfo($number)
+    {
+        $api = 'WayBill/GetSendMessage';
+        $query = [];
+        if (!empty($number)) {
+            $query = [
+                'query' => [
+                    'number' => $number,
+                ],
+            ];
+        }
+        $response = $this->client->get($this->host . $api, $query);
 
         return $this->parseResult($response->getBody());
     }
