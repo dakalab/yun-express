@@ -2,7 +2,11 @@
 
 namespace Dakalab\YunExpress\Tests;
 
+use Dakalab\YunExpress\ApplicationInfo;
 use Dakalab\YunExpress\Client;
+use Dakalab\YunExpress\SenderInfo;
+use Dakalab\YunExpress\ShippingInfo;
+use Dakalab\YunExpress\Waybill;
 
 /**
  * Test class for Dakalab\YunExpress\Client
@@ -118,5 +122,69 @@ class ClientTest extends TestCase
     public function testGetTrackingNumberByOrderID()
     {
         $this->client->getTrackingNumberByOrderID('fake');
+    }
+
+    /**
+     * @expectedException \Exception
+     */
+    public function testBatchAddWaybill()
+    {
+        $waybills = [];
+
+        $waybill = new Waybill;
+
+        $waybill->OrderNumber = 'H' . date('YmdHis') . mt_rand(100, 999);
+        $waybill->TrackingNumber = 'T' . date('YmdHis') . mt_rand(100, 999);
+        $waybill->ShippingMethodCode = 'UPS';
+        $waybill->PackageNumber = 1;
+        $waybill->Weight = 10;
+        $waybill->SourceCode = 'API';
+        $waybill->IsReturn = true;
+        $waybill->ApplicationType = 1;
+        $waybill->InsuranceType = 1;
+        $waybill->InsureAmount = 1000;
+        $waybill->SensitiveTypeID = 1;
+
+        $r = new ShippingInfo;
+        $r->ShippingTaxId = 'cn';
+        $r->CountryCode = 'AD';
+        $r->ShippingFirstName = 'xing';
+        $r->ShippingLastName = 'ming';
+        $r->ShippingCompany = 'company';
+        $r->ShippingAddress = 'adress';
+        $r->ShippingCity = 'city';
+        $r->ShippingState = 'guangdong';
+        $r->ShippingZip = '123456';
+        $r->ShippingPhone = '12345678456';
+
+        $waybill->ShippingInfo = $r;
+
+        $s = new SenderInfo;
+        $s->CountryCode = 'CN';
+        $s->SenderFirstName = 'xing';
+        $s->SenderLastName = 'ming';
+        $s->SenderCompany = 'company';
+        $s->SenderAddress = 'adress';
+        $s->SenderCity = 'city';
+        $s->SenderState = 'guangdong';
+        $s->SenderZip = '123456';
+        $s->SenderPhone = '12345678456';
+
+        $waybill->SenderInfo = $s;
+
+        $a = new ApplicationInfo;
+        $a->ApplicationName = 'Awesome product';
+        $a->HSCode = '12585';
+        $a->Qty = 1;
+        $a->UnitPrice = 10;
+        $a->UnitWeight = 1;
+        $a->PickingName = 'test';
+        $a->Remark = 'test';
+
+        $waybill->ApplicationInfos[] = $a;
+
+        $waybills[] = $waybill;
+
+        $this->client->batchAddWaybill($waybills);
     }
 }

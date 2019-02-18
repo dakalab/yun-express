@@ -141,7 +141,7 @@ class Client
     public function getCountry()
     {
         $api = 'lms/GetCountry';
-        $response = $this->client->request('GET', $this->host . $api);
+        $response = $this->client->get($this->host . $api);
 
         return $this->parseResult($response->getBody());
     }
@@ -150,7 +150,9 @@ class Client
      * Get available transports in given country,
      * if country code is not specified, then will list all transports
      *
-     * @param  string  $countryCode country code, e.g. CN
+     * @param  string                                  $countryCode country code, e.g. CN
+     * @throws \Exception
+     * @throws \GuzzleHttp\Exception\ClientException
      * @return array
      */
     public function getTransport($countryCode = '')
@@ -162,7 +164,7 @@ class Client
                 'query' => ['countryCode' => $countryCode],
             ];
         }
-        $response = $this->client->request('GET', $this->host . $api, $query);
+        $response = $this->client->get($this->host . $api, $query);
 
         return $this->parseResult($response->getBody());
     }
@@ -177,7 +179,7 @@ class Client
     public function getGoodsType()
     {
         $api = 'lms/GetGoodstype';
-        $response = $this->client->request('GET', $this->host . $api);
+        $response = $this->client->get($this->host . $api);
 
         return $this->parseResult($response->getBody());
     }
@@ -215,7 +217,7 @@ class Client
                 ],
             ];
         }
-        $response = $this->client->request('GET', $this->host . $api, $query);
+        $response = $this->client->get($this->host . $api, $query);
 
         return $this->parseResult($response->getBody());
     }
@@ -237,7 +239,27 @@ class Client
                 ],
             ];
         }
-        $response = $this->client->request('GET', $this->host . $api, $query);
+        $response = $this->client->get($this->host . $api, $query);
+
+        return $this->parseResult($response->getBody());
+    }
+
+    /**
+     * Batch add waybills
+     *
+     * @param  array   $waybills array of Waybill
+     * @return array
+     */
+    public function batchAddWaybill(array $waybills)
+    {
+        $api = 'WayBill/BatchAdd';
+        $data = [];
+        foreach ($waybills as $waybill) {
+            $data[] = $waybill->toArray();
+        }
+        $body = ['body' => json_encode($data)];
+
+        $response = $this->client->post($this->host . $api, $body);
 
         return $this->parseResult($response->getBody());
     }
