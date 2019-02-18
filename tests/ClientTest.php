@@ -208,4 +208,14 @@ class ClientTest extends TestCase
     {
         $this->client->getAgentNumbers('fake');
     }
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionCode 1006
+     * @expectedExceptionMessage 未找到数据
+     */
+    public function testGetWayBill()
+    {
+        $this->client->getWayBill('fake');
+    }
 }

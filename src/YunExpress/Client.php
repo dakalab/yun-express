@@ -205,19 +205,16 @@ class Client
         $type = 1
     ) {
         $api = 'lms/GetPrice';
-        $query = [];
-        if (!empty($countryCode)) {
-            $query = [
-                'query' => [
-                    'countryCode'    => $countryCode,
-                    'weight'         => $weight,
-                    'length'         => $length,
-                    'width'          => $width,
-                    'height'         => $height,
-                    'shippingTypeId' => $type,
-                ],
-            ];
-        }
+        $query = [
+            'query' => [
+                'countryCode'    => $countryCode,
+                'weight'         => $weight,
+                'length'         => $length,
+                'width'          => $width,
+                'height'         => $height,
+                'shippingTypeId' => $type,
+            ],
+        ];
         $response = $this->client->get($this->host . $api, $query);
 
         return $this->parseResult($response->getBody());
@@ -232,14 +229,11 @@ class Client
     public function getTrackingNumberByOrderID($orderID)
     {
         $api = 'WayBill/GetTrackNumber';
-        $query = [];
-        if (!empty($orderID)) {
-            $query = [
-                'query' => [
-                    'orderId' => $orderID,
-                ],
-            ];
-        }
+        $query = [
+            'query' => [
+                'orderId' => $orderID,
+            ],
+        ];
         $response = $this->client->get($this->host . $api, $query);
 
         return $this->parseResult($response->getBody());
@@ -274,14 +268,11 @@ class Client
     public function getSenderInfo($number)
     {
         $api = 'WayBill/GetSendMessage';
-        $query = [];
-        if (!empty($number)) {
-            $query = [
-                'query' => [
-                    'number' => $number,
-                ],
-            ];
-        }
+        $query = [
+            'query' => [
+                'number' => $number,
+            ],
+        ];
         $response = $this->client->get($this->host . $api, $query);
 
         return $this->parseResult($response->getBody());
@@ -296,14 +287,30 @@ class Client
     public function getAgentNumbers($orderIDs)
     {
         $api = 'WayBill/GetAgentNumbers';
-        $query = [];
-        if (!empty($orderIDs)) {
-            $query = [
-                'query' => [
-                    'orderIds' => $orderIDs,
-                ],
-            ];
-        }
+        $query = [
+            'query' => [
+                'orderIds' => $orderIDs,
+            ],
+        ];
+        $response = $this->client->get($this->host . $api, $query);
+
+        return $this->parseResult($response->getBody());
+    }
+
+    /**
+     * Get waybill info by waybill number, order id or tracking number
+     *
+     * @param  string  $number waybill number, order id or tracking number
+     * @return array
+     */
+    public function getWayBill($number)
+    {
+        $api = 'WayBill/GetWayBill';
+        $query = [
+            'query' => [
+                'wayBillNumber' => $number,
+            ],
+        ];
         $response = $this->client->get($this->host . $api, $query);
 
         return $this->parseResult($response->getBody());
