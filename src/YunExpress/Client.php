@@ -262,7 +262,7 @@ class Client
     /**
      * Get sender info
      *
-     * @param  string  $number can be waybill number, order id or tracking number
+     * @param  string  $number can be waybill number, order number or tracking number
      * @return array
      */
     public function getSenderInfo($number)
@@ -298,9 +298,9 @@ class Client
     }
 
     /**
-     * Get waybill info by waybill number, order id or tracking number
+     * Get waybill info by waybill number, order number or tracking number
      *
-     * @param  string  $number waybill number, order id or tracking number
+     * @param  string  $number waybill number, order number or tracking number
      * @return array
      */
     public function getWayBill($number)
@@ -380,4 +380,24 @@ class Client
 
         return $this->parseResult($response->getBody());
     }
+
+    /**
+     * Get tracking info by waybill number, order number or tracking number
+     *
+     * @param  string  $number waybill number, order number or tracking number
+     * @return array
+     */
+    public function getTrackingInfo($number)
+    {
+        $api = 'WayBill/GetTrackingNumber';
+        $query = [
+            'query' => [
+                'trackingNumber' => $number,
+            ],
+        ];
+        $response = $this->client->get($this->host . $api, $query);
+
+        return $this->parseResult($response->getBody());
+    }
+
 }

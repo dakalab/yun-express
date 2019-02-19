@@ -21,6 +21,10 @@ composer require dakalab/yun-express
 ```
 $client = new Dakalab\YunExpress\Client($account, $secret);
 
-$countries = $client->getCountry();
-print_r($countries);
+try {
+    $tracking = $client->getTrackingInfo($trackingNumber);
+    print_r($tracking);
+} catch (\Exception $e) {
+    echo $e->getMessage();
+}
 ```

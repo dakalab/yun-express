@@ -236,4 +236,14 @@ class ClientTest extends TestCase
         $res = $this->client->holdOrder('fake', '客户要求拦截', 1);
         $this->assertEquals('5004', $res['Rueslt']);
     }
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionCode 1006
+     * @expectedExceptionMessage 未找到数据
+     */
+    public function testGetTrackingInfo()
+    {
+        $res = $this->client->getTrackingInfo('fake');
+    }
 }
