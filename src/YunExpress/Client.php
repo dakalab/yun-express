@@ -357,4 +357,27 @@ class Client
 
         return $this->parseResult($response->getBody());
     }
+
+    /**
+     * Hold order
+     *
+     * @param  string  $number waybill number, order number or tracking number
+     * @param  string  remark  can not be empty
+     * @param  int     $type   1: waybill number, 2: order number, 3: tracking number
+     * @return array
+     */
+    public function holdOrder($number, $remark = '', $type = 2)
+    {
+        $api = 'WayBill/HoldOnCoustomerOrderInfo';
+        $data = [
+            'OrderNumber'  => $number,
+            'Type'         => $type,
+            'HoldOnRemark' => $remark,
+        ];
+        $body = ['body' => json_encode($data)];
+
+        $response = $this->client->post($this->host . $api, $body);
+
+        return $this->parseResult($response->getBody());
+    }
 }

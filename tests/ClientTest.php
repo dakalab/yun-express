@@ -230,4 +230,10 @@ class ClientTest extends TestCase
         $res = $this->client->deleteOrder('fake', 2);
         $this->assertEquals('5004', $res['Rueslt']);
     }
+
+    public function testHoldOrder()
+    {
+        $res = $this->client->holdOrder('fake', '客户要求拦截', 1);
+        $this->assertEquals('5004', $res['Rueslt']);
+    }
 }
