@@ -224,4 +224,10 @@ class ClientTest extends TestCase
         $res = $this->client->updateWeight('fake', '2.88');
         $this->assertEquals('failure', $res['Rueslt']);
     }
+
+    public function testDeleteOrder()
+    {
+        $res = $this->client->deleteOrder('fake', 2);
+        $this->assertEquals('5004', $res['Rueslt']);
+    }
 }

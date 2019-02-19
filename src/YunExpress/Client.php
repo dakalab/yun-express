@@ -124,7 +124,7 @@ class Client
         if (empty($arr) || !isset($arr['ResultCode'])) {
             throw new \Exception('Invalid response: ' . $result, 400);
         }
-        if ($arr['ResultCode'] != '0000') {
+        if (!in_array($arr['ResultCode'], ['0000', '5001'])) {
             if (!is_numeric($arr['ResultCode'])) {
                 $arr['ResultCode'] = '1001';
             }
@@ -329,6 +329,27 @@ class Client
         $data = [
             'OrderNumber' => $orderNumber,
             'Weight'      => $weight,
+        ];
+        $body = ['body' => json_encode($data)];
+
+        $response = $this->client->post($this->host . $api, $body);
+
+        return $this->parseResult($response->getBody());
+    }
+
+    /**
+     * Delete order
+     *
+     * @param  string  $number waybill number, order number or tracking number
+     * @param  int     $type   1: waybill number, 2: order number, 3: tracking number
+     * @return array
+     */
+    public function deleteOrder($number, $type = 2)
+    {
+        $api = 'WayBill/DeleteCoustomerOrderInfo';
+        $data = [
+            'OrderNumber' => $number,
+            'Type'        => $type,
         ];
         $body = ['body' => json_encode($data)];
 
