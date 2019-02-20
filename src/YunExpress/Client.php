@@ -400,4 +400,22 @@ class Client
         return $this->parseResult($response->getBody());
     }
 
+    /**
+     * Get shipping fee detail by waybill number
+     *
+     * @param  string  $number waybill number
+     * @return array
+     */
+    public function getShippingFeeDetail($number)
+    {
+        $api = 'WayBill/GetShippingFeeDetail';
+        $query = [
+            'query' => [
+                'wayBillNumber' => $number,
+            ],
+        ];
+        $response = $this->client->get($this->host . $api, $query);
+
+        return $this->parseResult($response->getBody());
+    }
 }

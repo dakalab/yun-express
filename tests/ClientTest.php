@@ -246,4 +246,14 @@ class ClientTest extends TestCase
     {
         $res = $this->client->getTrackingInfo('fake');
     }
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionCode 1006
+     * @expectedExceptionMessage 未找到数据
+     */
+    public function testGetShippingFeeDetail()
+    {
+        $res = $this->client->getShippingFeeDetail('fake');
+    }
 }
